@@ -41,6 +41,7 @@ namespace RPG.Control
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    print("InteractWithMovement");
                     GetComponent<Mover>().MoveTo(hit.point);
                 }
                 return true;
