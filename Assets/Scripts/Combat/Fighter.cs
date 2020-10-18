@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Movement;
+using RPG.Core;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour
+    public class Fighter : MonoBehaviour, IAction
     {
         [SerializeField] float weaponRange = 2.0f;
 
@@ -13,20 +14,32 @@ namespace RPG.Combat
 
         private void Update()
         {
-            bool isInRange = Vector3.Distance(transform.position, target.position) < weaponRange;
-            if (target != null && !isInRange)
+            if (target == null) return;
+
+            if (!GetIsInRange())
             {
                 GetComponent<Mover>().MoveTo(target.position);
             }
             else
             {
-                GetComponent<Mover>().Stop();
+                GetComponent<Mover>().Cancel();
             }
+        }
+
+        private bool GetIsInRange()
+        {
+            return Vector3.Distance(transform.position, target.position) < weaponRange;
         }
 
         public void Attack(CombatTarget combatTarget)
         {
+            GetComponent<ActionScheduler>().StartAction(this);
             target = combatTarget.transform;
+        }
+
+        public void Cancel()
+        {
+            target = null;
         }
     }
 }
