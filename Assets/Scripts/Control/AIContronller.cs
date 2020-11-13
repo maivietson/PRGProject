@@ -68,7 +68,7 @@ namespace RPG.Control
                 nextPosition = GetCurrentWaypoint();
             }
 
-            mover.StartMoveAction(guardPosition);
+            mover.StartMoveAction(nextPosition);
         }
 
         private Vector3 GetCurrentWaypoint()
